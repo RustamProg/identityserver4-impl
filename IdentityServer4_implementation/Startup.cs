@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using IdentityServer4_implementation.Resources;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -31,6 +32,10 @@ namespace IdentityServer4_implementation
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "IdentityServer4_implementation", Version = "v1"});
             });
+            services.AddIdentityServer()
+                .AddDeveloperSigningCredential()
+                .AddInMemoryApiResources(ResourceManager.Apis)
+                .AddInMemoryClients(ClientManager.Clients);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,7 +53,11 @@ namespace IdentityServer4_implementation
 
             app.UseRouting();
 
+            app.UseAuthentication();
+
             app.UseAuthorization();
+            
+            app.UseIdentityServer();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
