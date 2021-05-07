@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using IdentityServer4_implementation.Resources;
+using IdentityServer4_implementation.Services.TokenProvider;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -32,10 +33,12 @@ namespace IdentityServer4_implementation
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "IdentityServer4_implementation", Version = "v1"});
             });
-            services.AddIdentityServer()
-                .AddDeveloperSigningCredential()
-                .AddInMemoryApiResources(ResourceManager.Apis)
-                .AddInMemoryClients(ClientManager.Clients);
+            services.AddIdentityServer(options => options.IssuerUri = "localhost")
+                .AddInMemoryApiResources(ClientStore.GetApiResources())
+                .AddInMemoryIdentityResources(ClientStore.GetIdentityResources())
+                .AddInMemoryClients(ClientStore.GetClients())
+                .AddDeveloperSigningCredential(false);
+            services.AddTransient<ITokenProvider, TokenProvider>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
