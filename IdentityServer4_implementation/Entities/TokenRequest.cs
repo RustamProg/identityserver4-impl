@@ -1,11 +1,13 @@
+using Microsoft.AspNetCore.Mvc;
+
 namespace IdentityServer4_implementation.Entities
 {
     public class TokenRequest
     {
-        public string Username { get; set; }
-        public string Password { get; set; }
-        public string GrantType { get; set; }
-        public string Scope { get; set; }
-        public string RefreshToken { get; set; }
+        [FromForm(Name = "username")] public string Username { get; set; }
+        [FromForm(Name = "password")] public string Password { get; set; }
+        [FromForm(Name = "grant_type")] public string GrantType { get; set; }
+        [FromForm(Name = "scope")] public string Scope { get; set; }
+        [FromForm(Name = "refresh_token")] public string RefreshToken { get; set; }
     }
 }

@@ -28,13 +28,14 @@ namespace IdentityServer4_implementation
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "IdentityServer4_implementation", Version = "v1"});
             });
             services.AddIdentityServer(options => options.IssuerUri = "localhost")
                 .AddInMemoryApiResources(ClientStore.GetApiResources())
+                .AddInMemoryApiScopes(ClientStore.GetApiScopes())
                 .AddInMemoryIdentityResources(ClientStore.GetIdentityResources())
                 .AddInMemoryClients(ClientStore.GetClients())
                 .AddDeveloperSigningCredential(false);
@@ -52,7 +53,7 @@ namespace IdentityServer4_implementation
                     c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "IdentityServer4_implementation v1"));
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
 
