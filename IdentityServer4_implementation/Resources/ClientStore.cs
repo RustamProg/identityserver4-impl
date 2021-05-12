@@ -3,7 +3,7 @@ using IdentityServer4.Models;
 
 namespace IdentityServer4_implementation.Resources
 {
-    public class ClientStore
+    internal static class ClientStore
     {
         public static IEnumerable<ApiResource> GetApiResources()
         {
@@ -16,6 +16,7 @@ namespace IdentityServer4_implementation.Resources
                     Description = "Just test resource",
                     Scopes = new List<string>{"all.read", "all.write"},
                     ApiSecrets = new List<Secret>{new Secret("ScopeSecretString".Sha256())}, 
+                    UserClaims = new List<string>{"role"}
                 }
             };
         }
@@ -24,7 +25,12 @@ namespace IdentityServer4_implementation.Resources
         {
             return new List<IdentityResource>
             {
-                new IdentityResources.OpenId()
+                new IdentityResources.OpenId(),
+                new IdentityResource
+                {
+                    Name = "role",
+                    UserClaims = new List<string>{"role"}
+                }
             };
         }
 
@@ -43,7 +49,8 @@ namespace IdentityServer4_implementation.Resources
                     },
                     AllowedScopes =
                     {
-                        "all.read"
+                        "all.read",
+                        "all.write"
                     },
                     AllowOfflineAccess = false,
                     AccessTokenLifetime = 60

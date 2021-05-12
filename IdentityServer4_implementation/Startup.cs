@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using IdentityServer4_implementation.Models;
 using IdentityServer4_implementation.Resources;
 using IdentityServer4_implementation.Services.TokenProvider;
 using Microsoft.AspNetCore.Builder;
@@ -38,6 +39,7 @@ namespace IdentityServer4_implementation
                 .AddInMemoryApiScopes(ClientStore.GetApiScopes())
                 .AddInMemoryIdentityResources(ClientStore.GetIdentityResources())
                 .AddInMemoryClients(ClientStore.GetClients())
+                .AddTestUsers(Users.GetTestUsers())
                 .AddDeveloperSigningCredential(false);
             services.AddTransient<ITokenProvider, TokenProvider>();
         }
