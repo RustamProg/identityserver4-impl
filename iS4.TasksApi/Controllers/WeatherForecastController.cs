@@ -24,7 +24,7 @@ namespace iS4.TasksApi.Controllers
             _logger = logger;
         }
 
-        [Authorize]
+        [Authorize(Roles = "admin, user")]
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()
         {

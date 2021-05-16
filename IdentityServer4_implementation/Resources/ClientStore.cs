@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using IdentityServer4;
 using IdentityServer4.Models;
 
 namespace IdentityServer4_implementation.Resources
@@ -26,6 +27,7 @@ namespace IdentityServer4_implementation.Resources
             return new List<IdentityResource>
             {
                 new IdentityResources.OpenId(),
+                new IdentityResources.Profile(),
                 new IdentityResource
                 {
                     Name = "role",
@@ -53,7 +55,28 @@ namespace IdentityServer4_implementation.Resources
                         "all.write"
                     },
                     AllowOfflineAccess = false,
-                    AccessTokenLifetime = 60
+                    AccessTokenLifetime = 30
+                },
+                
+                new Client
+                {
+                    ClientName = "UsersLoginClient",
+                    ClientId = "users_login_client",
+                    AllowedGrantTypes = GrantTypes.ResourceOwnerPasswordAndClientCredentials,
+                    ClientSecrets =
+                    {
+                        new Secret("login_secret".Sha256())
+                    },
+                    AllowedScopes =
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        "all.read",
+                        "all.write",
+                        
+                    },
+                    AllowOfflineAccess = false,
+                    AccessTokenLifetime = 30
                 }
             };
         }
