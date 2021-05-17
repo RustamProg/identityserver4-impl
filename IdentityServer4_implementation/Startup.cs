@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
+using IdentityServer4;
 using IdentityServer4.AccessTokenValidation;
 using IdentityServer4.Services;
 using IdentityServer4.Validation;
@@ -55,6 +56,16 @@ namespace IdentityServer4_implementation
                 .AddDeveloperSigningCredential(false);
             services.AddTransient<ITokenProvider, TokenProvider>();
             services.AddScoped<IUserRepository, UserRepository>();
+            
+            services.AddAuthentication()
+                .AddGoogle("Google", options =>
+                {
+                    options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
+
+                    options.ClientId = "434483408261-55tc8n0cs4ff1fe21ea8df2o443v2iuc.apps.googleusercontent.com";
+                    options.ClientSecret = "3gcoTrEDPPJ0ukn_aYYT6PWo";
+                    options.CallbackPath = "/signin-google";
+                });
             
             // Для пользователей
             services.AddTransient<IResourceOwnerPasswordValidator, ResourceOwnerPasswordValidator>();

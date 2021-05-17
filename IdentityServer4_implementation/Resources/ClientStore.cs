@@ -77,7 +77,9 @@ namespace IdentityServer4_implementation.Resources
                     },
                     AllowOfflineAccess = false,
                     AccessTokenLifetime = 30
-                }
+                },
+                
+                
             };
         }
         
